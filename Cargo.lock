@@ -443,10 +443,12 @@ version = "0.1.0"
 dependencies = [
  "axum",
  "env_logger",
+ "http-body-util",
  "log",
  "reqwest",
  "serde",
  "tokio",
+ "tower",
  "tower-http",
  "tracing",
  "tracing-subscriber",
