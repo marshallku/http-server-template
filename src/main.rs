@@ -1,7 +1,7 @@
 use axum::serve;
 use env::state::AppState;
 use routes::app::app;
-use tokio::net::TcpListener;
+use tokio::{net::TcpListener, signal};
 use tower_http::trace::{DefaultMakeSpan, DefaultOnResponse, TraceLayer};
 use tracing::{info, Level};
 use utils::log::trace_layer_on_request;
@@ -31,5 +31,34 @@ async fn main() {
 
     info!("Listening on http://{}", address);
 
-    serve(listener, app.into_make_service()).await.unwrap();
+    serve(listener, app.into_make_service())
+        .with_graceful_shutdown(handle_shutdown())
+        .await
+        .unwrap();
+}
+
+async fn handle_shutdown() {
+    let ctrl_c = async {
+        signal::ctrl_c()
+            .await
+            .expect("failed to install Ctrl+C handler");
+    };
+
+    #[cfg(unix)]
+    let terminate = async {
+        signal::unix::signal(signal::unix::SignalKind::terminate())
+            .expect("failed to install signal handler")
+            .recv()
+            .await;
+    };
+
+    #[cfg(not(unix))]
+    let terminate = std::future::pending::<()>();
+
+    tokio::select! {
+        _ = ctrl_c => {},
+        _ = terminate => {},
+    }
+
+    info!("Shutting down...");
 }
