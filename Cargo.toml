@@ -4,15 +4,15 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-axum = "0.7.5"
+axum = "0.7.9"
 dotenv = "0.15.0"
-env_logger = "0.11.5"
+env_logger = "0.11.6"
 http-body-util = "0.1.2"
-log = "0.4.22"
-reqwest = { version = "0.12.5", features = ["json"] }
-serde = { version = "1.0.204", features = ["derive"] }
-tokio = { version = "1.39.2", features = ["rt-multi-thread", "macros"] }
+log = "0.4.25"
+reqwest = { version = "0.12.12", features = ["json"] }
+serde = { version = "1.0.217", features = ["derive"] }
+tokio = { version = "1.43.0", features = ["rt-multi-thread", "macros"] }
 tower = "0.4.13"
 tower-http = { version = "0.5.2", features = ["trace"] }
-tracing = "0.1.40"
-tracing-subscriber = { version = "0.3.18", features = ["env-filter"] }
+tracing = "0.1.41"
+tracing-subscriber = { version = "0.3.19", features = ["env-filter"] }
